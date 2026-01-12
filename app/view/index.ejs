@@ -115,7 +115,6 @@
             appearance: none;
         }
 
-        /* PERBAIKAN: Warna BG lebih gelap agar teks putih terlihat kontras saat ingin dipilih */
         select {
             background-color: rgba(15, 12, 41, 0.7) !important;
             cursor: pointer;
@@ -126,20 +125,17 @@
             padding-right: 50px;
         }
 
-        /* Styling daftar pilihan di dalam dropdown */
         select option {
             background-color: #1e1b4b;
             color: #ffffff;
         }
 
-        /* Saat diisi berubah jadi putih terang */
         input:not(:placeholder-shown),
         select:not([value=""]):valid {
             background-color: #e8f0fe !important;
             color: #1e1b4b !important;
         }
 
-        /* Hilangkan spin button SKS */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -195,11 +191,11 @@
             transform: scale(1.1);
         }
 
-	.form-group {
-    	margin-bottom: 15px;
-	}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-	.form-row {
+        .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
@@ -225,145 +221,105 @@
             <p>Solusi terstruktur untuk pengelolaan data akademik mahasiswa dan pencatatan mata kuliah secara efisien</p>
         </header>
 
-<div class="card">
-    <div class="card-title">
-        <span class="material-symbols-outlined">person_add</span> Data Mahasiswa
-    </div>
-
-    <form action="/mahasiswa" method="POST">
-        <div style="margin-bottom:15px">
-            <input
-                type="text"
-                name="nama"
-                placeholder="Nama Lengkap"
-                required
-            >
-        </div>
-
-        <div class="form-row">
-            <input
-                type="text"
-                name="nim"
-                placeholder="NIM"
-                required
-            >
-            <input
-                type="text"
-                name="jurusan"
-                placeholder="Jurusan"
-                required
-            >
-        </div>
-
-        <button type="submit" class="btn">Simpan Mahasiswa</button>
-    </form>
-
-<div style="margin-top:25px">
-    <% if (mahasiswa.length === 0) { %>
-        <p style="opacity:.6">Belum ada data mahasiswa</p>
-    <% } %>
-
-    <% mahasiswa.forEach(m => { %>
-        <div class="data-item">
-            <div>
-                <strong><%= m.nama %></strong><br>
-                <small>
-                    NIM: <%= m.nim %> | Jurusan: <%= m.jurusan %><br>
-                    Total SKS: <%= m.total_sks %> | MK: <%= m.jumlah_mk %>
-                </small>
+        <!-- Card Data Mahasiswa -->
+        <div class="card">
+            <div class="card-title">
+                <span class="material-symbols-outlined">person_add</span> Data Mahasiswa
             </div>
 
-            <form action="/mahasiswa/delete/<%= m.id %>" method="POST">
-                <button class="btn-delete">
-                    <span class="material-symbols-outlined">delete</span>
-                </button>
+            <form action="/mahasiswa" method="POST">
+                <div style="margin-bottom:15px">
+                    <input type="text" name="nama" placeholder="Nama Lengkap" required>
+                </div>
+
+                <div class="form-row">
+                    <input type="text" name="nim" placeholder="NIM" required>
+                    <input type="text" name="jurusan" placeholder="Jurusan" required>
+                </div>
+
+                <button type="submit" class="btn">Simpan Mahasiswa</button>
             </form>
+
+            <div style="margin-top:25px">
+                <% if (mahasiswa.length === 0) { %>
+                    <p style="opacity:.6">Belum ada data mahasiswa</p>
+                <% } %>
+
+                <% mahasiswa.forEach(m => { %>
+                    <div class="data-item">
+                        <div>
+                            <strong><%= m.nama %></strong><br>
+                            <small>
+                                NIM: <%= m.nim %> | Jurusan: <%= m.jurusan %><br>
+                                Total SKS: <%= m.total_sks %> | MK: <%= m.jumlah_mk %>
+                            </small>
+                        </div>
+
+                        <form action="/mahasiswa/delete/<%= m.id %>" method="POST">
+                            <button class="btn-delete">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
         </div>
-    <% }) %>
-</div>
 
-
-
-    <div id="listMahasiswa"></div>
-</div>
-
-
-
+        <!-- Card Data Mata Kuliah -->
         <div class="card">
             <div class="card-title">
                 <span class="material-symbols-outlined">library_books</span> Data Mata Kuliah
             </div>
 
-<form action="/matakuliah" method="POST">
-    <div class="form-group">
-        <input type="text" name="kode_mk" placeholder="Kode MK" required>
-    </div>
+            <form action="/matakuliah" method="POST">
+                <div class="form-group">
+                    <input type="text" name="kode_mk" placeholder="Kode MK" required>
+                </div>
 
-    <div class="form-group">
-        <input type="text" name="nama_mk" placeholder="Nama Mata Kuliah" required>
-    </div>
+                <div class="form-group">
+                    <input type="text" name="nama_mk" placeholder="Nama Mata Kuliah" required>
+                </div>
 
-    <div class="form-group">
-        <input type="number" name="sks" placeholder="SKS" required>
-    </div>
+                <div class="form-group">
+                    <input type="number" name="sks" placeholder="SKS" required>
+                </div>
 
-    <div class="form-group">
-        <select name="mahasiswa_id" required>
-            <option value="" disabled selected>Pilih Mahasiswa</option>
-            <% mahasiswa.forEach(m => { %>
-                <option value="<%= m.id %>"><%= m.nama %></option>
-            <% }) %>
-        </select>
-    </div>
+                <div class="form-group">
+                    <select name="mahasiswa_id" required>
+                        <option value="" disabled selected>Pilih Mahasiswa</option>
+                        <% mahasiswa.forEach(m => { %>
+                            <option value="<%= m.id %>"><%= m.nama %> - <%= m.nim %></option>
+                        <% }) %>
+                    </select>
+                </div>
 
-    <button type="submit" class="btn">Tambah Mata Kuliah</button>
-</form>
+                <button type="submit" class="btn">Tambah Mata Kuliah</button>
+            </form>
 
+            <div style="margin-top:25px">
+                <% if (mataKuliah.length === 0) { %>
+                    <p style="opacity:.6">Belum ada mata kuliah</p>
+                <% } %>
+                
+                <% mataKuliah.forEach(mk => { %>
+                    <div class="data-item">
+                        <div>
+                            <strong><%= mk.nama_mk %></strong> (<%= mk.sks %> SKS)<br>
+                            <small>
+                                Kode: <%= mk.kode_mk %><br>
+                                Mahasiswa: <%= mk.nama_mahasiswa %>
+                            </small>
+                        </div>
 
-<div style="margin-top:25px">
-    <% if (mataKuliah.length === 0) { %>
-        <p style="opacity:.6">Belum ada mata kuliah</p>
-    <% } %>
-<% mataKuliah.forEach(mk => { %>
-    <div class="data-item">
-        <div>
-            <strong><%= mk.nama_mk %></strong> (<%= mk.sks %> SKS)<br>
-            <small>
-                Kode: <%= mk.kode_mk %><br>
-                Mahasiswa: <%= mk.nama_mahasiswa %>
-            </small>
-        </div>
-
-        <form action="/matakuliah/delete/<%= mk.id %>" method="POST">
-            <button class="btn-delete" title="Hapus Mata Kuliah">
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-        </form>
-    </div>
-<% }) %>
-
-
-
-</div>
-
-
-<select name="mahasiswa_id" required>
-    <option value="" disabled selected>Pilih Mahasiswa</option>
-
-    <% mahasiswa.forEach(m => { %>
-        <option value="<%= m.id %>">
-            <%= m.nama %> - <%= m.nim %>
-        </option>
-    <% }) %>
-</select>
-
-    <button type="submit" class="btn">Tambah Mata Kuliah</button>
-</form>
-
-
-            <div id="listMatakuliah"></div>
+                        <form action="/matakuliah/delete/<%= mk.id %>" method="POST">
+                            <button class="btn-delete" title="Hapus Mata Kuliah">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
         </div>
     </div>
-
 </body>
 </html>
